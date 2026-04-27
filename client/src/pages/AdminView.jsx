@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { motion } from 'framer-motion';
 import { Download, Database, Users, Image as ImageIcon, Upload, Trash2 } from 'lucide-react';
 import './AdminView.css';
@@ -42,8 +42,8 @@ const AdminView = () => {
     try {
       setLoading(true);
       const [bookingsRes, galleryRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/bookings'),
-        axios.get('http://localhost:5000/api/gallery')
+        axios.get(`${API_BASE_URL}/api/bookings`),
+        axios.get(`${API_BASE_URL}/api/gallery`)
       ]);
       setBookings(bookingsRes.data);
       setGalleryImages(galleryRes.data);
@@ -56,7 +56,7 @@ const AdminView = () => {
 
   const fetchQr = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/settings/gpay-qr');
+      const res = await axios.get(`${API_BASE_URL}/api/settings/gpay-qr`);
       setCurrentQr(res.data.value);
     } catch (error) {
       console.error("Error fetching QR:", error);
@@ -64,7 +64,7 @@ const AdminView = () => {
   };
 
   const handleDownloadExcel = () => {
-    window.open('http://localhost:5000/api/download-excel', '_blank');
+    window.open(`${API_BASE_URL}/api/download-excel`, '_blank');
   };
 
   const handleImageUpload = async (e) => {
@@ -77,7 +77,7 @@ const AdminView = () => {
 
     try {
       setUploading(true);
-      await axios.post('http://localhost:5000/api/gallery', formData, {
+      await axios.post(`${API_BASE_URL}/api/gallery`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('Image uploaded successfully!');
@@ -102,7 +102,7 @@ const AdminView = () => {
 
     try {
       setQrUploading(true);
-      await axios.post('http://localhost:5000/api/settings/gpay-qr', formData, {
+      await axios.post(`${API_BASE_URL}/api/settings/gpay-qr`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('GPay QR Code updated successfully!');
@@ -120,7 +120,7 @@ const AdminView = () => {
   const handleDeleteImage = async (id) => {
     if (!window.confirm("Are you sure you want to delete this image?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/gallery/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/gallery/${id}`);
       fetchData();
     } catch (error) {
       console.error("Error deleting image:", error);
@@ -220,7 +220,7 @@ const AdminView = () => {
           <div className="admin-gallery-grid">
             {galleryImages.map((img) => (
               <div key={img.id} className="admin-gallery-item">
-                <img src={`http://localhost:5000/uploads/${img.filename}`} alt={img.title} />
+                <img src={`${API_BASE_URL}/uploads/${img.filename}`} alt={img.title} />
                 <div className="admin-gallery-item-info">
                   <span>{img.title}</span>
                   <button type="button" onClick={() => handleDeleteImage(img.id)} className="btn-delete">
@@ -254,7 +254,7 @@ const AdminView = () => {
           {currentQr && (
             <div className="current-qr-preview">
               <p>Current Active QR Code:</p>
-              <img src={`http://localhost:5000/uploads/${currentQr}`} alt="GPay QR" />
+              <img src={`${API_BASE_URL}/uploads/${currentQr}`} alt="GPay QR" />
             </div>
           )}
         </div>

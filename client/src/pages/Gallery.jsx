@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { motion } from 'framer-motion';
 import { Hotel } from 'lucide-react';
 import './Gallery.css';
@@ -13,7 +14,7 @@ const Gallery = () => {
   useEffect(() => {
     const fetchGallery = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/gallery');
+        const response = await axios.get(`${API_BASE_URL}/api/gallery`);
         setImages(response.data);
       } catch (error) {
         console.error("Error fetching gallery images:", error);
@@ -50,7 +51,7 @@ const Gallery = () => {
               transition={{ delay: index * 0.1, type: 'spring' }}
             >
               <img 
-                src={`http://localhost:5000/uploads/${img.filename}`} 
+                src={`${API_BASE_URL}/uploads/${img.filename}`} 
                 alt={img.title} 
                 loading="lazy" 
                 onError={(e) => { 

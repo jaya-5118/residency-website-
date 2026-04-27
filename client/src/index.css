@@ -164,6 +164,23 @@ button:active {
 @media (max-width: 768px) {
   .form-grid {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  body {
+    padding: 10px;
+  }
+
+  .page-container {
+    padding: 1rem;
+    padding-top: 100px;
+  }
+
+  h1 { font-size: 2.2rem !important; }
+  h2 { font-size: 1.6rem !important; }
+
+  .glass {
+    padding: 1.5rem !important;
   }
 }
 

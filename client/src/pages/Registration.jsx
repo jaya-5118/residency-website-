@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Save, FileSpreadsheet, CheckCircle, Smartphone, X } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import './Registration.css';
 
 import { useLanguage } from '../LanguageContext';
@@ -21,7 +22,7 @@ const Registration = () => {
   useEffect(() => {
     const fetchQr = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/settings/gpay-qr');
+        const res = await axios.get(`${API_BASE_URL}/api/settings/gpay-qr`);
         if (res.data && res.data.value) {
           setQrCode(res.data.value);
         }
@@ -55,7 +56,7 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/bookings', formData);
+      await axios.post(`${API_BASE_URL}/api/bookings`, formData);
       setStatus({ type: 'success', message: t('reg_success') });
       setFormData({
         name: '', phone: '', aadhar: '', room_no: '', room_type: 'AC',
@@ -196,7 +197,7 @@ const Registration = () => {
                 <>
                   <p>{t('pay_instr')} <strong>₹{calculateTotal()}</strong></p>
                   <div className="qr-image-container">
-                    <img src={`http://localhost:5000/uploads/${qrCode}`} alt="Payment QR" />
+                    <img src={`${API_BASE_URL}/uploads/${qrCode}`} alt="Payment QR" />
                   </div>
                 </>
               ) : (

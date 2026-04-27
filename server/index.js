@@ -7,13 +7,16 @@ const fs = require('fs');
 const multer = require('multer');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
 // Serve static files from the uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve static files from the React frontend build
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // Configure Multer for image uploads
 const storage = multer.diskStorage({
@@ -244,6 +247,16 @@ app.post('/api/settings/gpay-qr', upload.single('image'), (req, res) => {
   });
 });
 
+// All other GET requests not handled will return the React app
+app.get('*', (req, res) => {
+  const indexPath = path.join(__dirname, '../client/dist', 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.send('API is running. Frontend not built yet.');
+  }
+});
+
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, User, MapPin, Calendar, CreditCard, Download, Trash2 } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { useLanguage } from '../LanguageContext';
 import './SearchCustomer.css';
 
@@ -13,7 +14,7 @@ const SearchCustomer = () => {
 
   const fetchAllBookings = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/bookings');
+      const res = await axios.get(`${API_BASE_URL}/api/bookings`);
       if (Array.isArray(res.data)) {
         setResults(res.data);
       } else {
@@ -35,7 +36,7 @@ const SearchCustomer = () => {
     
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/bookings/search?query=${query}`);
+      const res = await axios.get(`${API_BASE_URL}/api/bookings/search?query=${query}`);
       if (Array.isArray(res.data)) {
         setResults(res.data);
       } else {
@@ -51,7 +52,7 @@ const SearchCustomer = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this booking?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/bookings/${id}`);
+        await axios.delete(`${API_BASE_URL}/api/bookings/${id}`);
         // Refresh the list
         if (query) handleSearch({ preventDefault: () => {} });
         else fetchAllBookings();
@@ -62,7 +63,7 @@ const SearchCustomer = () => {
   };
 
   const handleDownloadExcel = () => {
-    window.open('http://localhost:5000/api/download-excel', '_blank');
+    window.open(`${API_BASE_URL}/api/download-excel`, '_blank');
   };
 
   return (

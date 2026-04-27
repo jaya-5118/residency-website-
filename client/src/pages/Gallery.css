@@ -68,3 +68,19 @@
   font-size: 1.2rem;
   font-weight: 600;
 }
+
+@media (max-width: 768px) {
+  .hero-banner {
+    padding: 3rem 1rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .img-overlay {
+    transform: translateY(0);
+    padding: 1.5rem 1rem 0.5rem;
+  }
+}
